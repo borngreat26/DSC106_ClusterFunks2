@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RR Interval Explorer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+  <h1>RR Interval Explorer</h1>
+
+  <div id="controls">
+    <label for="record-select">Record:</label>
+    <select id="record-select"></select>
+  
+    <label for="annotation-select">Beat Type:</label>
+    <select id="annotation-select" multiple></select>
+  
+    <!-- Legend goes here -->
+    <span id="legend" style="margin-left:16px;"></span>
+  </div>
+
+  <div id="narrative" style="margin:12px 0; font-style:italic; color:#555;"></div>
+  
+
+  <!-- overview (brush) view -->
+  <svg id="overview" width="960" height="200"></svg>
+
+  <!-- detail view -->
+  <svg id="detail"   width="960" height="400"></svg>
+
+  <script src="main.js"></script>
+</body>
+</html>

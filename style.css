@@ -1,0 +1,87 @@
+/* style.css */
+body {
+    font-family: sans-serif;
+    margin: 20px;
+  }
+  
+  h1 {
+    text-align: center;
+  }
+  
+  #controls {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  svg {
+    display: block;
+    margin: 0 auto 20px auto;
+    border: 1px solid #ccc;
+  }
+  
+  .brush .selection {
+    fill: steelblue;
+    fill-opacity: 0.3;
+  }
+  
+  .tooltip {
+    position: absolute;
+    background: white;
+    border: 1px solid gray;
+    padding: 5px;
+    border-radius: 4px;
+    pointer-events: none;
+  }
+
+  #annotation-select {
+    width: 120px;      /* wide enough for the labels */
+    margin-left: 8px;  /* some breathing room from the Record dropdown */
+  }
+  
+
+  #zoom-toggle {
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+  #controls label {
+    margin-right: 8px;
+  }
+
+  #annotation-select { width:120px; margin-left:8px; }
+  #zoom-toggle { margin-left:12px; }
+  #controls label { margin-right:8px; }
+
+/* style.css */
+#legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;           /* space between items */
+    font-size: 14px;     /* larger text */
+    margin: 8px 0;       /* a bit of vertical padding */
+  }
+  
+  #legend .legend-item {
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  #legend .legend-item span:first-child {
+    width: 14px;
+    height: 14px;        /* larger color square */
+    margin-right: 6px;
+  }
+  
+  #legend .legend-item span:last-child {
+    font-size: 14px;
+  }
+  
+
+  .tooltip {
+    font-size: 12px;
+    line-height: 1.2;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+  
+  
+  
+  
