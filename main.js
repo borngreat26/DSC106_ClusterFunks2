@@ -62,6 +62,28 @@ d3.csv("rr_intervals.csv", d => ({
   record_id:  d.record_id
 })).then(data => {
 
+  // ─── 0a) Human-readable labels for annotation codes ───────────────────────
+  const annotationLabels = {
+    '+': 'R-peak onset',
+    '/': 'Paced beat',
+    'A': 'Atrial premature beat',
+    'a': 'Aberrated atrial premature beat',
+    'J': 'Junctional premature beat',
+    'S': 'Supraventricular premature beat',
+    'V': 'Premature ventricular contraction (PVC)',
+    'L': 'Left bundle branch-block beat',
+    'R': 'Right bundle branch-block beat',
+    'F': 'Fusion of normal & ventricular beat',
+    'f': 'Fusion of paced & normal beat',
+    'Q': 'Unclassified QRS complex',
+    'x': 'External pacemaker spike',
+    '~': 'T-wave marker / no QRS',
+    'j': 'Junctional escape beat',
+    '|': 'Non-conducted P-wave',
+    'N': 'Normal sinus beat',     
+    'i': 'Non-conducted P-wave', 
+  };
+
   // ─── 2) Record dropdown ────────────────────────────────────────────────────
   const recordIds = Array.from(new Set(data.map(d => d.record_id))).sort();
   const recordSelect = d3.select("#record-select");
@@ -90,7 +112,7 @@ d3.csv("rr_intervals.csv", d => ({
     .attr("stroke",  "steelblue")
     .attr("stroke-width", 1);
 
-  // ── **ADD OVERVIEW TITLE & AXIS LABELS** ────────────────────────────────
+  // ── Overview title & labels ──────────────────────────────────────────────
   overviewSvg.append("text")
     .attr("class", "chart-title")
     .attr("x", ovW / 2)
@@ -131,7 +153,7 @@ d3.csv("rr_intervals.csv", d => ({
     .attr("stroke", "tomato")
     .attr("stroke-width", 1.5);
 
-  // ── **ADD DETAIL TITLE & AXIS LABELS** ────────────────────────────────
+  // ── Detail title & labels ────────────────────────────────────────────────
   detailSvg.append("text")
     .attr("class", "chart-title")
     .attr("x", detW / 2)
@@ -163,12 +185,13 @@ d3.csv("rr_intervals.csv", d => ({
     .domain(annTypes)
     .range(d3.schemeCategory10);
 
+  // Populate dropdown with friendly labels
   const annSelect = d3.select("#annotation-select");
   annSelect.selectAll("option")
     .data(annTypes)
     .join("option")
       .attr("value", d => d)
-      .text(d => d)
+      .text(d => annotationLabels[d] || d)
       .property("selected", true);
   annSelect.on("change", () => {
     const ext = d3.brushSelection(overviewSvg.select(".brush").node());
@@ -180,18 +203,22 @@ d3.csv("rr_intervals.csv", d => ({
     }
   });
 
+  // Build legend with friendly labels
   const legendContainer = d3.select("#legend");
-  annTypes.forEach(ann => {
-    const item = legendContainer.append("span").attr("class","legend-item");
+
+  annTypes.forEach(code => {
+    const item = legendContainer.append("span")
+      .attr("class", "legend-item");
+  
+    // color swatch
     item.append("span")
-        .style("width","12px")
-        .style("height","12px")
-        .style("background-color", colorScale(ann))
-        .style("display","inline-block")
-        .style("margin-right","4px");
+        .attr("class", "color-box")
+        .style("background-color", colorScale(code));
+  
+    // label text
     item.append("span")
-        .text(ann)
-        .style("font-size","12px");
+        .attr("class", "label")
+        .text(annotationLabels[code] || code);
   });
 
   // ─── 5) updateOverview: overview line + heatmap + reset detail ───────────
@@ -244,7 +271,11 @@ d3.csv("rr_intervals.csv", d => ({
         .attr("fill", d => colorScale(d.annotation))
         .on("mouseover", (e,d) => {
           tooltip.style("opacity",1)
-            .html(`Time: ${d.time_sec.toFixed(1)}s<br/>RR: ${d.rr_ms.toFixed(1)}ms<br/>Type: ${d.annotation}`)
+            .html(
+              `Time: ${d.time_sec.toFixed(1)}s<br/>
+               RR: ${d.rr_ms.toFixed(1)}ms<br/>
+               Type: ${annotationLabels[d.annotation] || d.annotation}`
+            )
             .style("left", (e.pageX+8)+"px")
             .style("top",  (e.pageY-28)+"px");
         })

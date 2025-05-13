@@ -84,4 +84,32 @@ body {
   
   
   
-  
+  /* Legend formatting: flex-wrap into multiple rows */
+#legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;             /* space between items */
+  padding: 8px 0;
+  align-items: center;
+}
+
+/* Each legend entry: color square + text */
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+/* The little square swatch */
+.legend-item .color-box {
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+  border: 1px solid #666;
+}
+
+/* The label text */
+.legend-item .label {
+  font-size: 12px;
+  white-space: nowrap;
+}
