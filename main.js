@@ -1,7 +1,7 @@
 // main.js
 
 // ─── 0) Margins & SVG setup ────────────────────────────────────────────────
-const margin = { top: 10, right: 20, bottom: 30, left: 50 };
+const margin = { top: 30, right: 20, bottom: 30, left: 50 };
 const ovW    = 960 - margin.left - margin.right;
 const ovH    = 200 - margin.top - margin.bottom;
 const detW   = 960 - margin.left - margin.right;
