@@ -58,7 +58,7 @@ detailSvg.append("defs")
 d3.csv("rr_intervals.csv", d => ({
   time_sec:   +d.time_sec,
   rr_ms:      +d.rr_ms,
-  annotation: d.annotation,   // e.g. "N", "V", etc.
+  annotation: d.annotation,
   record_id:  d.record_id
 })).then(data => {
 
@@ -80,8 +80,8 @@ d3.csv("rr_intervals.csv", d => ({
     '~': 'T-wave marker / no QRS',
     'j': 'Junctional escape beat',
     '|': 'Non-conducted P-wave',
-    'N': 'Normal sinus beat',     
-    'i': 'Non-conducted P-wave', 
+    'N': 'Normal sinus beat',
+    'i': 'Non-conducted P-wave'
   };
 
   // ─── 2) Record dropdown ────────────────────────────────────────────────────
@@ -180,12 +180,21 @@ d3.csv("rr_intervals.csv", d => ({
     .text("RR interval (ms)");
 
   // ─── A) Annotation selector & legend ───────────────────────────────────────
-  const annTypes = Array.from(new Set(data.map(d => d.annotation))).sort();
+  // Build annTypes sorted by descending frequency
+  const freqMap = new Map();
+  data.forEach(d => {
+    freqMap.set(d.annotation, (freqMap.get(d.annotation) || 0) + 1);
+  });
+  const annTypes = Array.from(freqMap.entries())
+    .sort(([,a], [,b]) => b - a)
+    .map(([code]) => code);
+
+  // Color scale uses that frequency‐ordered list
   const colorScale = d3.scaleOrdinal()
     .domain(annTypes)
     .range(d3.schemeCategory10);
 
-  // Populate dropdown with friendly labels
+  // Populate dropdown with friendly labels in freq order
   const annSelect = d3.select("#annotation-select");
   annSelect.selectAll("option")
     .data(annTypes)
@@ -203,19 +212,15 @@ d3.csv("rr_intervals.csv", d => ({
     }
   });
 
-  // Build legend with friendly labels
+  // Build legend with friendly labels in freq order
   const legendContainer = d3.select("#legend");
-
+  legendContainer.selectAll("*").remove();
   annTypes.forEach(code => {
     const item = legendContainer.append("span")
       .attr("class", "legend-item");
-  
-    // color swatch
     item.append("span")
         .attr("class", "color-box")
         .style("background-color", colorScale(code));
-  
-    // label text
     item.append("span")
         .attr("class", "label")
         .text(annotationLabels[code] || code);
@@ -272,9 +277,9 @@ d3.csv("rr_intervals.csv", d => ({
         .on("mouseover", (e,d) => {
           tooltip.style("opacity",1)
             .html(
-              `Time: ${d.time_sec.toFixed(1)}s<br/>
-               RR: ${d.rr_ms.toFixed(1)}ms<br/>
-               Type: ${annotationLabels[d.annotation] || d.annotation}`
+              `Time: ${d.time_sec.toFixed(1)}s<br/>` +
+              `RR: ${d.rr_ms.toFixed(1)}ms<br/>` +
+              `Type: ${annotationLabels[d.annotation] || d.annotation}`
             )
             .style("left", (e.pageX+8)+"px")
             .style("top",  (e.pageY-28)+"px");
@@ -288,7 +293,6 @@ d3.csv("rr_intervals.csv", d => ({
     );
 
     detailSvg.selectAll(".narrative").remove();
-
     for (let i = 0; i <= slice.length - runLengthThresh; i++) {
       const run = slice.slice(i, i + runLengthThresh);
       if (run.every(pt => pt.annotation === 'V')) {
