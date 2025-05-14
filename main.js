@@ -1,7 +1,7 @@
 const margin = { top: 30, right: 20, bottom: 30, left: 50 };
 const width = 960 - margin.left - margin.right;
 const ovHeight = 200 - margin.top - margin.bottom;
-const detHeight = 300 - margin.top - margin.bottom; // Increased height
+const detHeight = 300 - margin.top - margin.bottom;
 
 let allData = [];
 let currentRecord = null;
@@ -178,8 +178,19 @@ function updateDetailCharts(t0, t1) {
   });
 
   charts.forEach(chart => {
+    if (chart.data.length === 0) {
+      detailDiv.append("div")
+        .style("margin", "40px 0")
+        .style("text-align", "center")
+        .style("color", "#777")
+        .style("font-style", "italic")
+        .style("font-size", "14px")
+        .text(`No information available for ${chart.label}`);
+      return;
+    }
+
     const svgWrap = detailDiv.append("div")
-      .style("margin-bottom", "40px"); // Extra spacing between charts
+      .style("margin-bottom", "40px");
 
     const svg = svgWrap.append("svg")
       .attr("width", width + margin.left + margin.right)
