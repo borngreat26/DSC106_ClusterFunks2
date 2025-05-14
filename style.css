@@ -1,106 +1,168 @@
-/* style.css */
+/* Base layout */
 body {
-    font-family: sans-serif;
-    margin: 20px;
-  }
-  
-  h1 {
-    text-align: center;
-  }
-  
-  #controls {
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  
-  svg {
-    display: block;
-    margin: 0 auto 20px auto;
-    border: 1px solid #ccc;
-  }
-  
-  .brush .selection {
-    fill: steelblue;
-    fill-opacity: 0.3;
-  }
-  
-  .tooltip {
-    position: absolute;
-    background: white;
-    border: 1px solid gray;
-    padding: 5px;
-    border-radius: 4px;
-    pointer-events: none;
-  }
+  font-family: sans-serif;
+  margin: 20px;
+}
 
-  #annotation-select {
-    width: 120px;      /* wide enough for the labels */
-    margin-left: 8px;  /* some breathing room from the Record dropdown */
-  }
-  
+/* Header section */
+header {
+  max-width: 1400px;
+  margin: 0 auto;
+  text-align: center;
+  padding-bottom: 12px;
+}
 
-  #zoom-toggle {
-    margin-left: 4px;
-    vertical-align: middle;
-  }
-  #controls label {
-    margin-right: 8px;
-  }
+/* Title styling */
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #111;
+  margin: 0 auto 0.5rem auto;
+  position: relative;
+  width: 100%;
+  max-width: 1400px;
+}
 
-  #annotation-select { width:120px; margin-left:8px; }
-  #zoom-toggle { margin-left:12px; }
-  #controls label { margin-right:8px; }
+h1::after {
+  content: "";
+  display: block;
+  width: 100%;
+  margin: 12px auto 0 auto;
+  border-bottom: 1px solid #ccc;
+}
 
-/* style.css */
-#legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;           /* space between items */
-    font-size: 14px;     /* larger text */
-    margin: 8px 0;       /* a bit of vertical padding */
-  }
-  
-  #legend .legend-item {
-    display: inline-flex;
-    align-items: center;
-  }
-  
-  #legend .legend-item span:first-child {
-    width: 14px;
-    height: 14px;        /* larger color square */
-    margin-right: 6px;
-  }
-  
-  #legend .legend-item span:last-child {
-    font-size: 14px;
-  }
-  
+/* Summary text under the title */
+.summary {
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto 2rem auto;
+  padding: 0 12px;
+  margin-top: 0.25rem;
+}
 
-  .tooltip {
-    font-size: 12px;
-    line-height: 1.2;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  }
-  
-  
-  
-  /* Legend formatting: flex-wrap into multiple rows */
+/* Definitions section */
+.definitions {
+  max-width: 800px;
+  margin: 0 auto 32px auto;
+  padding-bottom: 16px;
+  text-align: left;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #333;
+  position: relative;
+}
+
+.definitions::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 175%;
+  bottom: 0;
+  /* or use top: 100% if you want it below the element */
+  border-bottom: 1px solid #ccc;
+}
+
+.definitions h2,
+.definitions h3 {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 1.25rem;
+  color: #222;
+}
+
+.beat-definitions {
+  columns: 2;
+  column-gap: 24px;
+  list-style-type: none;
+  padding-left: 0;
+  margin-top: 0.5rem;
+}
+
+.beat-definitions li {
+  margin-bottom: 0.5rem;
+}
+
+/* Controls section */
+#controls {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+#controls label {
+  margin-right: 8px;
+}
+
+#annotation-select {
+  width: 120px;
+  margin-left: 8px;
+}
+
+#zoom-toggle {
+  margin-left: 12px;
+  vertical-align: middle;
+}
+
+/* SVG plot styling */
+svg {
+  display: block;
+  margin: 0 auto 20px auto;
+  border: 1px solid #ccc;
+}
+
+.brush .selection {
+  fill: steelblue;
+  fill-opacity: 0.3;
+}
+
+/* Tooltip */
+.tooltip {
+  position: absolute;
+  background: white;
+  border: 1px solid gray;
+  padding: 5px;
+  border-radius: 4px;
+  pointer-events: none;
+  font-size: 12px;
+  line-height: 1.2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Legend container */
 #legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;             /* space between items */
+  gap: 12px;
   padding: 8px 0;
   align-items: center;
+  font-size: 14px;
+  margin: 8px 0;
 }
 
-/* Each legend entry: color square + text */
-.legend-item {
-  display: flex;
+/* Each legend item */
+#legend .legend-item {
+  display: inline-flex;
   align-items: center;
   margin-bottom: 6px;
 }
 
-/* The little square swatch */
+#legend .legend-item span:first-child {
+  width: 14px;
+  height: 14px;
+  margin-right: 6px;
+  border: 1px solid #666;
+}
+
+#legend .legend-item span:last-child {
+  font-size: 14px;
+  white-space: nowrap;
+}
+
 .legend-item .color-box {
   width: 12px;
   height: 12px;
@@ -108,8 +170,34 @@ body {
   border: 1px solid #666;
 }
 
-/* The label text */
 .legend-item .label {
   font-size: 12px;
   white-space: nowrap;
+}
+
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  /* ⬅️ allows multiple rows */
+  gap: 12px;
+  /* ⬅️ adds spacing between buttons */
+  justify-content: center;
+  margin: 1.5rem auto;
+  max-width: 960px;
+}
+
+.beat-toggle {
+  padding: 8px 14px;
+  font-size: 0.95rem;
+  background: #f9f9f9;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.beat-toggle.active {
+  background-color: #0077cc;
+  color: white;
+  border-color: #0077cc;
 }
